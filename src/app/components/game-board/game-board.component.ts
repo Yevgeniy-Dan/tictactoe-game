@@ -24,9 +24,12 @@ export class GameBoardComponent {
         console.log(`Player ${winner} is won.`);
 
         this.resetGame();
+      } else if (this.isDraw()) {
+        console.log("It's a draw");
+        this.resetGame();
+      } else {
+        this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
       }
-
-      this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
     }
   }
 
@@ -76,5 +79,15 @@ export class GameBoardComponent {
       ['', '', ''],
     ];
     this.currentPlayer = 'X';
+  }
+
+  private isDraw(): boolean {
+    for (let row of this.gameBoard) {
+      for (let cell of row) {
+        if (cell === '') return false;
+      }
+    }
+
+    return true;
   }
 }
