@@ -1,0 +1,20 @@
+/* .game-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 5px;
+  width: 300px;
+  margin: 0 auto;
+  background-color: #f0f0f0;
+  padding: 10px;
+} */
+
+.game-board {
+  margin-top: -50px;
+  display: inline-block;
+  border: 1px solid #000;
+}
+
+.row {
+  display: flex;
+}
