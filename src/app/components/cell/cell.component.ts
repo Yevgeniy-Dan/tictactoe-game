@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-cell',
@@ -7,4 +7,9 @@ import { Component, Input } from '@angular/core';
 })
 export class CellComponent {
   @Input() value?: string;
+  @Output() cellClick = new EventEmitter<void>();
+
+  onClick(): void {
+    this.cellClick.emit();
+  }
 }

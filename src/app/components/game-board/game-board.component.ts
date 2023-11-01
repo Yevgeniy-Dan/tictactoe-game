@@ -11,4 +11,12 @@ export class GameBoardComponent {
     ['', '', ''],
     ['', '', ''],
   ];
+  currentPlayer: 'X' | 'O' = 'X';
+
+  onCellClick(row: number, col: number): void {
+    if (this.gameBoard[row][col] === '') {
+      this.gameBoard[row][col] = this.currentPlayer;
+      this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
+    }
+  }
 }
