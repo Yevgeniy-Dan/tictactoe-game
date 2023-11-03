@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WIN_RULES } from 'src/app/constants/constants';
+import { CELL_CLASS_NAMES_MAP, WIN_RULES } from 'src/app/constants/constants';
 import { Players, sign } from 'src/app/types/game-board';
 
 /**
@@ -23,6 +23,8 @@ export class GameBoardComponent implements OnInit {
     O: [],
   };
   currentPlayer: 'X' | 'O' = 'X';
+
+  classNamesMap: Map<number, string> = CELL_CLASS_NAMES_MAP;
 
   initializeGameBoard(): void {
     for (let i = 1; i <= 9; i++) {
