@@ -1,0 +1,29 @@
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  padding: 16px;
+  max-width: 250px;
+  width: 250px;
+  margin: 50px 0;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  color: #333;
+  height: 80px;
+  width: 80px;
+}
+
+::ng-deep .button mat-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 44px;
+  width: 100%;
+  height: 100%;
+}

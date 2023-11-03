@@ -9,11 +9,19 @@ import { GameBoardComponent } from './components/game-board/game-board.component
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 import { GameScoreComponent } from './components/game-score/game-score.component';
+import { ButtonComponent } from './components/button/button.component';
 
 @NgModule({
-  declarations: [AppComponent, GameBoardComponent, GameScoreComponent],
+  declarations: [
+    AppComponent,
+    GameBoardComponent,
+    GameScoreComponent,
+    ButtonComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,6 +29,8 @@ import { GameScoreComponent } from './components/game-score/game-score.component
     BrowserAnimationsModule,
     MatCardModule,
     MatDividerModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
