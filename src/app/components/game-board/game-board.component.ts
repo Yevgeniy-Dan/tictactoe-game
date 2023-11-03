@@ -1,30 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { WIN_RULES } from 'src/app/constants/constants';
+import { Players, sign } from 'src/app/types/game-board';
 
+/**
+ * The GameBoardComponent represents a tic-tac-toe game board.
+ * It allows players to make moves and tracks the game's state, including wins, losses, draws, and stalemates.
+ */
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.css'],
 })
-export class GameBoardComponent {
-  gameBoard: string[][] = [
-    ['', '', ''],
-    ['', '', ''],
-    ['', '', ''],
-  ];
+export class GameBoardComponent implements OnInit {
+  ngOnInit(): void {
+    this.initializeGameBoard();
+  }
+
+  completedSteps: number = 0;
+  gameBoard: Map<number, sign> = new Map<number, sign>();
+  players: Players = {
+    X: [],
+    O: [],
+  };
   currentPlayer: 'X' | 'O' = 'X';
 
-  onCellClick(row: number, col: number): void {
-    if (this.gameBoard[row][col] === '') {
-      this.gameBoard[row][col] = this.currentPlayer;
+  initializeGameBoard(): void {
+    for (let i = 1; i <= 9; i++) {
+      this.gameBoard.set(i, '');
+    }
+  }
 
-      const winner: string | null = this.checkForWinner();
+  onCellClick(cellNumber: number): void {
+    if (this.gameBoard.get(cellNumber) === '') {
+      this.gameBoard.set(cellNumber, this.currentPlayer);
+      this.players[this.currentPlayer].push(cellNumber);
+      this.completedSteps++;
 
-      /**TODO: Determine the winnerd count in the state when we define the user components */
-      if (winner) {
-        console.log(`Player ${winner} is won.`);
+      const xWin: boolean = this.checkWin(this.players['X']);
+      const oWin: boolean = this.checkWin(this.players['O']);
 
+      if (xWin) {
+        console.log(`Player X is won.`);
         this.resetGame();
-      } else if (this.isDraw()) {
+      } else if (oWin) {
+        console.log(`Player O is won.`);
+        this.resetGame();
+      } else if (this.isStatemate()) {
         console.log("It's a draw");
         this.resetGame();
       } else {
@@ -33,61 +54,112 @@ export class GameBoardComponent {
     }
   }
 
-  private checkForWinner(): string | null {
-    //Check horizontal rows
-    for (let row of this.gameBoard) {
-      if (row[0] === row[1] && row[0] === row[2] && row[0] !== '') {
-        return row[0];
+  private checkWin(playerCells: number[]): boolean {
+    for (const rule of WIN_RULES) {
+      if (rule.every((cell) => playerCells.includes(cell))) {
+        return true; // The current player has a winning combination
       }
     }
-
-    //Check vertical columns
-    for (let col = 0; col < 3; col++) {
-      if (
-        this.gameBoard[0][col] === this.gameBoard[1][col] &&
-        this.gameBoard[0][col] === this.gameBoard[2][col] &&
-        this.gameBoard[0][col] !== ''
-      ) {
-        return this.gameBoard[0][col];
-      }
-    }
-
-    //Check diagonals
-    if (
-      this.gameBoard[0][0] === this.gameBoard[1][1] &&
-      this.gameBoard[0][0] === this.gameBoard[2][2] &&
-      this.gameBoard[0][0] !== ''
-    ) {
-      return this.gameBoard[0][0];
-    }
-
-    if (
-      this.gameBoard[0][2] === this.gameBoard[1][1] &&
-      this.gameBoard[0][2] === this.gameBoard[2][0] &&
-      this.gameBoard[0][2] !== ''
-    ) {
-      return this.gameBoard[0][2];
-    }
-
-    return null;
+    return false;
   }
 
-  resetGame(): void {
-    this.gameBoard = [
-      ['', '', ''],
-      ['', '', ''],
-      ['', '', ''],
-    ];
+  /**
+   *  Checks if the game has reached a potential stalemate.
+   * A stalemate occurs when there are 5 or more completed steps,
+   * and all possible combinations of X and O moves do not lead to a win for either player.
+   *
+   * @returns {boolean}  if a stalemate is detected, the function returns false; otherwise, it returns true.
+   */
+  private isStatemate(): boolean {
+    if (this.completedSteps >= 5) {
+      const emptyCells = this.findEmptyCells();
+
+      if (emptyCells.length === 0) return true;
+
+      const numberOfPossiblePlacedX = Math.ceil(emptyCells.length / 2);
+      const possibleXCombinations: number[][] = this.generateCombinations(
+        emptyCells,
+        numberOfPossiblePlacedX
+      );
+
+      for (const combination of possibleXCombinations) {
+        if (this.checkStatemateForPlayer('X', combination)) {
+          return false;
+        }
+
+        const remainingCellForO = emptyCells.filter(
+          (cell) => !combination.includes(cell)
+        );
+
+        if (this.checkStatemateForPlayer('O', remainingCellForO)) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Helper method to check for a stalemate for a specific player
+   * @param player The player ('X' or 'O') to check for a potential win or loss.
+   * @param combination An array of cell numbers representing the player's moves and possible additional moves to consider.
+   * @returns true if the specified player has won or lost the game based on the provided combination; false otherwise.
+   */
+  private checkStatemateForPlayer(
+    player: 'X' | 'O',
+    combination: number[]
+  ): boolean {
+    const completedStepsForPlayer: number[] = [
+      ...this.players[player],
+      ...combination,
+    ].sort();
+    return this.checkWin(completedStepsForPlayer);
+  }
+
+  /**
+   * Helper method to find empty cells in the game board
+   * @returns {number[]} empty cells of the current game board
+   */
+  private findEmptyCells(): number[] {
+    const emptyCells: number[] = [];
+
+    for (const [key, value] of this.gameBoard) {
+      if (value === '') emptyCells.push(key);
+    }
+
+    return emptyCells;
+  }
+
+  private resetGame(): void {
+    this.initializeGameBoard();
+    this.players = { X: [], O: [] } as Players;
     this.currentPlayer = 'X';
   }
 
-  private isDraw(): boolean {
-    for (let row of this.gameBoard) {
-      for (let cell of row) {
-        if (cell === '') return false;
+  /**
+   * Helper method to generate possible combinations of cells
+   * @param arr An array of numbers from which combinations will be generated.
+   * @param k The length of the combinations to generate.
+   * @returns An array of arrays, where each inner array represents a unique combination of 'k' elements from the input array 'arr.'
+   */
+  private generateCombinations(arr: number[], k: number): number[][] {
+    const combinations: number[][] = [];
+
+    function backtrack(start: number, currentCombo: number[]) {
+      if (currentCombo.length === k) {
+        combinations.push(currentCombo.slice());
+        return;
+      }
+
+      for (let i = start; i < arr.length; i++) {
+        currentCombo.push(arr[i]);
+        backtrack(i + 1, currentCombo);
+        currentCombo.pop();
       }
     }
-
-    return true;
+    backtrack(0, []);
+    return combinations;
   }
 }

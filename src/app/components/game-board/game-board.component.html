@@ -1,9 +1,9 @@
 <div class="game-board">
-  <div class="row" *ngFor="let row of gameBoard; let rowIndex = index">
+  <div class="row" *ngFor="let rowIndex of [0, 1, 2]; let i = index">
     <app-cell
-      *ngFor="let cell of row; let colIndex = index"
-      value="{{ gameBoard[rowIndex][colIndex] }}"
-      (cellClick)="onCellClick(rowIndex, colIndex)"
+      *ngFor="let colIndex of [0, 1, 2]; let j = index"
+      value="{{ gameBoard.get(i * 3 + j + 1) }}"
+      (cellClick)="onCellClick(i * 3 + j + 1)"
     ></app-cell>
   </div>
 </div>
