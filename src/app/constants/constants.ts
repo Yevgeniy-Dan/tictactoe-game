@@ -10,13 +10,13 @@ export const WIN_RULES: number[][] = [
 ];
 
 export const CELL_CLASS_NAMES_MAP: Map<number, string> = new Map([
-  [1, 'cell top left bottom right'],
-  [2, 'cell top bottom'],
-  [3, 'cell top right bottom left'],
+  [1, 'cell left top right'],
+  [2, 'cell top'],
+  [3, 'cell right top left'],
   [4, 'cell left right'],
-  [5, 'cell'],
-  [6, 'cell left right'],
-  [7, 'cell top left bottom right'],
-  [8, 'cell top bottom'],
-  [9, 'cell top left bottom right'],
+  [5, 'cell '],
+  [6, 'cell right left'],
+  [7, 'cell left bottom top right'],
+  [8, 'cell bottom top '],
+  [9, 'cell right bottom top left'],
 ]);

@@ -1,5 +1,5 @@
 <div class="game-board">
-  <mat-grid-list cols="3" rowHeight="1:1" [gutterSize]="'0'">
+  <mat-grid-list cols="3" rowHeight="1:1" [gutterSize]="'0px'">
     <mat-grid-tile
       *ngFor="let cellIndex of [1, 2, 3, 4, 5, 6, 7, 8, 9]; let i = index"
       class="{{ classNamesMap.get(cellIndex) }}"
@@ -7,7 +7,6 @@
         x: gameBoard.get(cellIndex) === 'X',
         o: gameBoard.get(cellIndex) === 'O'
       }"
-      class="cell"
       (click)="onCellClick(cellIndex)"
       >{{ gameBoard.get(cellIndex) }}</mat-grid-tile
     >

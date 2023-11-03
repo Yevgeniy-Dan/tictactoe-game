@@ -1,5 +1,5 @@
 .cell {
-  border: 10px solid #0da192;
+  border: 5px solid #0da192;
   font-size: 62px;
   font-weight: bold;
   color: #14bdac;
@@ -32,6 +32,5 @@
 }
 
 .game-board {
-  padding: 10px;
-  width: 600px;
+  width: 400px;
 }
