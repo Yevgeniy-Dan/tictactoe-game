@@ -5,6 +5,9 @@
 }
 
 .content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #14bdac;
 }
 
@@ -12,4 +15,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.game-score-container {
+  display: flex;
+  justify-content: center;
 }
