@@ -19,8 +19,17 @@
   align-items: center;
 }
 
+.blocked {
+  pointer-events: none;
+}
+
 .game-score-container,
 .control-button-container {
   display: flex;
   justify-content: center;
+}
+
+.statemate-container {
+  color: #f0f0f0;
+  font-size: 46px;
 }

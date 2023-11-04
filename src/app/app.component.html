@@ -1,8 +1,14 @@
 <div class="container">
   <ng-container>
-    <app-game-board class="game-board-container"></app-game-board>
+    <app-game-board
+      [class.blocked]="isBlocked"
+      class="game-board-container"
+    ></app-game-board>
   </ng-container>
   <div class="content-container">
+    <div class="statemate-container" *ngIf="isStatemate">
+      <h2>Ничья!</h2>
+    </div>
     <app-game-score class="game-score-container"> </app-game-score>
     <app-button class="control-button-container"> </app-button>
   </div>

@@ -17,6 +17,7 @@
   color: #333;
   height: 80px;
   width: 80px;
+  margin-top: 50px;
 }
 
 ::ng-deep .button mat-icon {

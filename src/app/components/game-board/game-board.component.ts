@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CELL_CLASS_NAMES_MAP, WIN_RULES } from 'src/app/constants/constants';
-import { Players, sign } from 'src/app/types/game-board';
+import { GameService } from 'src/app/game-service.service';
+import { Players, PlayersScore, sign } from 'src/app/types/game-board';
 
 /**
  * The GameBoardComponent represents a tic-tac-toe game board.
@@ -22,9 +23,15 @@ export class GameBoardComponent implements OnInit {
     X: [],
     O: [],
   };
+  score: PlayersScore = {
+    X: 0,
+    O: 0,
+  };
   currentPlayer: 'X' | 'O' = 'X';
 
   classNamesMap: Map<number, string> = CELL_CLASS_NAMES_MAP;
+
+  constructor(private gameService: GameService) {}
 
   initializeGameBoard(): void {
     for (let i = 1; i <= 9; i++) {
@@ -43,13 +50,24 @@ export class GameBoardComponent implements OnInit {
 
       if (xWin) {
         console.log(`Player X is won.`);
-        this.resetGame();
+        this.score['X']++;
+        this.gameService.updateScore({ ...this.score });
+        setTimeout(() => {
+          this.resetGame();
+        }, 2000);
       } else if (oWin) {
         console.log(`Player O is won.`);
-        this.resetGame();
+        this.score['O']++;
+        setTimeout(() => {
+          this.resetGame();
+        }, 2000);
+        this.gameService.updateScore({ ...this.score });
       } else if (this.isStatemate()) {
-        console.log("It's a draw");
-        this.resetGame();
+        console.log("It's a statemate");
+        this.gameService.updateStatemate(true);
+        setTimeout(() => {
+          this.resetGame();
+        }, 5000);
       } else {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
       }
@@ -138,6 +156,8 @@ export class GameBoardComponent implements OnInit {
     this.initializeGameBoard();
     this.players = { X: [], O: [] } as Players;
     this.currentPlayer = 'X';
+    this.gameService.updateStatemate(false);
+    this.gameService.updateIsBlockedGameBoard(false);
   }
 
   /**
