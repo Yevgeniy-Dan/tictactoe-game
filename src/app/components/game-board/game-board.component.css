@@ -34,3 +34,7 @@
 .game-board {
   width: 400px;
 }
+
+.blocked-cell {
+  pointer-events: none;
+}

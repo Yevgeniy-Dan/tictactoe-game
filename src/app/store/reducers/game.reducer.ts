@@ -10,6 +10,8 @@ export const intiialState: GameState = {
   },
   clearGameBoard: false,
   resetGame: false,
+  isStatemate: false,
+  isCellsBlocked: false,
 };
 
 export const gameReducer = createReducer(
@@ -21,15 +23,17 @@ export const gameReducer = createReducer(
         ...state.count,
         [action.player]: state.count[action.player] + 1,
       },
+      isCellsBlocked: true,
     };
   }),
   on(gameActions.clearGameBoard, (state, action) => {
     return {
       ...state,
       clearGameBoard: action.clearGameBoard,
+      isCellsBlocked: false,
     };
   }),
-  on(gameActions.resetGameState, (state, action) => {
+  on(gameActions.resetGameState, (state) => {
     return {
       ...state,
       clearGameBoard: true,
@@ -37,6 +41,14 @@ export const gameReducer = createReducer(
         O: 0,
         X: 0,
       },
+      isCellsBlocked: false,
+    };
+  }),
+  on(gameActions.setStatemate, (state, { isStatemate }) => {
+    return {
+      ...state,
+      isStatemate,
+      isCellsBlocked: true,
     };
   })
 );

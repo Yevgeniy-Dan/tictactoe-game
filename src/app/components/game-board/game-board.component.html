@@ -5,7 +5,8 @@
       class="{{ classNamesMap.get(cellIndex) }}"
       [ngClass]="{
         x: gameBoard.get(cellIndex) === 'X',
-        o: gameBoard.get(cellIndex) === 'O'
+        o: gameBoard.get(cellIndex) === 'O',
+        'blocked-cell': isCellsBlocked$ | async
       }"
       (click)="onCellClick(cellIndex)"
       >{{ gameBoard.get(cellIndex) }}</mat-grid-tile

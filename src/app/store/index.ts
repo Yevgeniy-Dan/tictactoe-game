@@ -8,6 +8,8 @@ export interface GameState {
   count: PlayersScore;
   clearGameBoard: boolean;
   resetGame: boolean;
+  isStatemate: boolean;
+  isCellsBlocked: boolean;
 }
 
 export interface AppState {
@@ -29,4 +31,14 @@ export const selectClearGameBoard = createSelector(
 export const selectResetGameState = createSelector(
   selectGame,
   (state: GameState) => state.resetGame
+);
+
+export const selectIsStatemate = createSelector(
+  selectGame,
+  (state: GameState) => state.isStatemate
+);
+
+export const selectIsCellsBlocked = createSelector(
+  selectGame,
+  (state: GameState) => state.isCellsBlocked
 );

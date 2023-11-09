@@ -3,6 +3,7 @@
     <app-game-board class="game-board-container"></app-game-board>
   </ng-container>
   <div class="content-container">
+    <h3 *ngIf="isStatemate$ | async">Ничья</h3>
     <app-game-score class="game-score-container"> </app-game-score>
     <app-button class="control-button-container"> </app-button>
   </div>

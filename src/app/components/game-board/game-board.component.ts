@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subject, Subscriber, takeUntil } from 'rxjs';
+import { Observable, Subject, Subscriber, takeUntil } from 'rxjs';
 
 import { CELL_CLASS_NAMES_MAP, WIN_RULES } from 'src/app/constants/constants';
 import {
   AppState,
   selectClearGameBoard,
+  selectIsCellsBlocked,
   selectResetGameState,
 } from 'src/app/store';
 import {
   changeScore,
   clearGameBoard,
   resetGameState,
+  setStatemate,
 } from 'src/app/store/actions/game.actions';
 import { Players, sign } from 'src/app/types/game-board';
 
@@ -34,6 +36,9 @@ export class GameBoardComponent implements OnInit {
   currentPlayer: 'X' | 'O' = 'X';
 
   classNamesMap: Map<number, string> = CELL_CLASS_NAMES_MAP;
+
+  isCellsBlocked$: Observable<boolean> =
+    this.store.select(selectIsCellsBlocked);
 
   private unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -67,14 +72,15 @@ export class GameBoardComponent implements OnInit {
       const oWin: boolean = this.checkWin(this.players['O']);
 
       if (xWin) {
-        console.log(`Player X is won.`);
-
         this.store.dispatch(changeScore({ player: 'X' }));
       } else if (oWin) {
-        console.log(`Player O is won.`);
         this.store.dispatch(changeScore({ player: 'O' }));
       } else if (this.isStatemate()) {
-        console.log("It's a draw");
+        this.store.dispatch(setStatemate({ isStatemate: true }));
+
+        setTimeout(() => {
+          this.store.dispatch(setStatemate({ isStatemate: false }));
+        }, 5000);
       } else {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
       }

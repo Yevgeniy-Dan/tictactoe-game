@@ -1,3 +1,9 @@
+h3 {
+  color: #f0f0f0;
+  font-size: 48px;
+  margin-bottom: 30px;
+}
+
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;

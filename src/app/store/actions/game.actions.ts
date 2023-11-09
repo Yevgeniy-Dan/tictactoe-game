@@ -13,3 +13,8 @@ export const clearGameBoard = createAction(
 export const resetGameState = createAction(
   '[Game Page] Toggle Reset Game State'
 );
+
+export const setStatemate = createAction(
+  '[Game Score] Set Statemate',
+  props<{ isStatemate: boolean }>()
+);
