@@ -1,5 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Subject, Subscriber, takeUntil } from 'rxjs';
+
 import { CELL_CLASS_NAMES_MAP, WIN_RULES } from 'src/app/constants/constants';
+import {
+  AppState,
+  selectClearGameBoard,
+  selectResetGameState,
+} from 'src/app/store';
+import {
+  changeScore,
+  clearGameBoard,
+  resetGameState,
+} from 'src/app/store/actions/game.actions';
 import { Players, sign } from 'src/app/types/game-board';
 
 /**
@@ -12,10 +25,6 @@ import { Players, sign } from 'src/app/types/game-board';
   styleUrls: ['./game-board.component.css'],
 })
 export class GameBoardComponent implements OnInit {
-  ngOnInit(): void {
-    this.initializeGameBoard();
-  }
-
   completedSteps: number = 0;
   gameBoard: Map<number, sign> = new Map<number, sign>();
   players: Players = {
@@ -25,6 +34,22 @@ export class GameBoardComponent implements OnInit {
   currentPlayer: 'X' | 'O' = 'X';
 
   classNamesMap: Map<number, string> = CELL_CLASS_NAMES_MAP;
+
+  private unsubscribe$: Subject<void> = new Subject<void>();
+
+  constructor(private store: Store<AppState>) {
+    this.setSubscriptionToClearGameBoardEvent();
+    this.setSubscriptionToResetGameState();
+  }
+
+  ngOnInit(): void {
+    this.initializeGameBoard();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
   initializeGameBoard(): void {
     for (let i = 1; i <= 9; i++) {
@@ -43,13 +68,13 @@ export class GameBoardComponent implements OnInit {
 
       if (xWin) {
         console.log(`Player X is won.`);
-        this.resetGame();
+
+        this.store.dispatch(changeScore({ player: 'X' }));
       } else if (oWin) {
         console.log(`Player O is won.`);
-        this.resetGame();
+        this.store.dispatch(changeScore({ player: 'O' }));
       } else if (this.isStatemate()) {
         console.log("It's a draw");
-        this.resetGame();
       } else {
         this.currentPlayer = this.currentPlayer === 'X' ? 'O' : 'X';
       }
@@ -134,7 +159,7 @@ export class GameBoardComponent implements OnInit {
     return emptyCells;
   }
 
-  private resetGame(): void {
+  resetGame(): void {
     this.initializeGameBoard();
     this.players = { X: [], O: [] } as Players;
     this.currentPlayer = 'X';
@@ -163,5 +188,26 @@ export class GameBoardComponent implements OnInit {
     }
     backtrack(0, []);
     return combinations;
+  }
+
+  private setSubscriptionToClearGameBoardEvent(): void {
+    this.store
+      .select(selectClearGameBoard)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((toClear) => {
+        if (toClear) {
+          this.resetGame();
+          this.store.dispatch(clearGameBoard({ clearGameBoard: false }));
+        }
+      });
+  }
+
+  private setSubscriptionToResetGameState(): void {
+    this.store
+      .select(selectResetGameState)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.resetGame();
+      });
   }
 }

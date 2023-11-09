@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+import * as fromGame from './store/reducers/game.reducer';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +33,7 @@ import { ButtonComponent } from './components/button/button.component';
     MatDividerModule,
     MatIconModule,
     MatButtonModule,
+    StoreModule.forRoot({ game: fromGame.reducer }),
   ],
   providers: [],
   bootstrap: [AppComponent],
