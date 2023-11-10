@@ -1,4 +1,10 @@
 import { createAction, props } from '@ngrx/store';
+import { PlayerNames } from 'src/app/types/game-board';
+
+export const setPlayerNames = createAction(
+  '[Game Page] Set Players Name',
+  props<{ names: PlayerNames }>()
+);
 
 export const changeScore = createAction(
   '[Game Page] Change Score',

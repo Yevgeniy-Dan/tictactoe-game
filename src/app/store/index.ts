@@ -1,10 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { PlayersScore } from '../types/game-board';
+import { PlayerNames, PlayersScore } from '../types/game-board';
 
 export const gameFeaturesKey = 'game';
 
 export interface GameState {
+  players: PlayerNames;
   count: PlayersScore;
   clearGameBoard: boolean;
   resetGame: boolean;
@@ -21,6 +22,11 @@ export const selectGame = createFeatureSelector<GameState>(gameFeaturesKey);
 export const selectGameScore = createSelector(
   selectGame,
   (state: GameState) => state.count
+);
+
+export const selectPlayerNames = createSelector(
+  selectGame,
+  (state: GameState) => state.players
 );
 
 export const selectClearGameBoard = createSelector(

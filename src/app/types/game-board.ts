@@ -8,4 +8,9 @@ export type PlayersScore = {
   O: number;
 };
 
+export type PlayerNames = {
+  X: string;
+  O: string;
+};
+
 export type sign = 'X' | 'O' | '';

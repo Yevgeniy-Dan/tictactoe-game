@@ -2,8 +2,10 @@ import { Action, createReducer, on } from '@ngrx/store';
 import * as gameActions from '../actions/game.actions';
 
 import { GameState } from '..';
+import { PlayerNames } from 'src/app/types/game-board';
 
 export const intiialState: GameState = {
+  players: {} as PlayerNames,
   count: {
     X: 0,
     O: 0,
@@ -16,12 +18,22 @@ export const intiialState: GameState = {
 
 export const gameReducer = createReducer(
   intiialState,
+  on(gameActions.setPlayerNames, (state, action) => {
+    return {
+      ...state,
+      players: { ...action.names },
+    };
+  }),
   on(gameActions.changeScore, (state, action) => {
     return {
       ...state,
       count: {
         ...state.count,
         [action.player]: state.count[action.player] + 1,
+      },
+      players: {
+        ...state.players,
+        [state.players[action.player]]: state.count[action.player] + 1,
       },
       isCellsBlocked: true,
     };

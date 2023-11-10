@@ -13,9 +13,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { GameScoreComponent } from './components/game-score/game-score.component';
 import { ButtonComponent } from './components/button/button.component';
+import { NicknameDialogComponent } from './components/nickname-dialog/nickname-dialog.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +28,7 @@ import { ButtonComponent } from './components/button/button.component';
     GameBoardComponent,
     GameScoreComponent,
     ButtonComponent,
+    NicknameDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,6 +39,10 @@ import { ButtonComponent } from './components/button/button.component';
     MatDividerModule,
     MatIconModule,
     MatButtonModule,
+    FormsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
     StoreModule.forRoot({ game: fromGame.reducer }),
   ],
   providers: [],

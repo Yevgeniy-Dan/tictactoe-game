@@ -1,9 +1,11 @@
 <div class="score-container">
   <div class="score-card">
     <div class="score">
-      <p>Team X</p>
+      <p>{{ (playersName$ | async)?.X }}</p>
     </div>
-    <div class="score"><p>Team O</p></div>
+    <div class="score">
+      <p>{{ (playersName$ | async)?.O }}</p>
+    </div>
   </div>
 
   <mat-divider></mat-divider>

@@ -1,0 +1,13 @@
+<div class="dialog-container">
+  <h1>Enter your name for X</h1>
+  <div>
+    <p>What's your name?</p>
+    <mat-form-field>
+      <mat-label>Team {{ team }} name:</mat-label>
+      <input matInput [(ngModel)]="nickname" required />
+    </mat-form-field>
+  </div>
+  <div class="mat-dialog-actions">
+    <button mat-button (click)="onSubmit()">Submit</button>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+mat-form-field {
+  width: 100%;
+}
+
+.dialog-container {
+  overflow: hidden;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.dialog-container h1 {
+  font-size: 24px;
+  margin-bottom: 7px;
+}
+
+.dialog-container p {
+  margin-bottom: 7px;
+}
+
+.dialog-container mat-form-field {
+  margin: 7px 0;
+}
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 7px 0;
+}
+
+.mat-dialog-actions button {
+  background-color: #14bdac;
+  color: #f0f0f0;
+}
